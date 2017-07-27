@@ -12,5 +12,5 @@ public interface Filter {
 
     void filtrateRelatedness(LinkedHashMap<String, Double> relatedness);
 
-    String filterTerm(String item);
+    String filterTerm(String item, String word);
 }

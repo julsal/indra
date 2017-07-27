@@ -25,7 +25,7 @@ public class MaxFilter implements Filter {
     }
 
     @Override
-    public String filterTerm(String item) {
+    public String filterTerm(String item, String word){
         throw new RuntimeException(String.format("%s does not implement filtrateitems",
                 this.getClass().getSimpleName()));
     }

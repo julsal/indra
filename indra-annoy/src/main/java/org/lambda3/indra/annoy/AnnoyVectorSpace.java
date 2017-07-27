@@ -145,13 +145,27 @@ public class AnnoyVectorSpace extends CachedVectorSpace {
         }
     }
 
+
+    public String runFilter(String term, String word){
+        String token = null;
+        if (upercaseFilter != null) {
+            token = upercaseFilter.filterTerm(term, word);
+        }
+
+        return token;
+
+    }
+
     @Override
     public Map<String, float[]> getNearestVectors(AnalyzedTerm term, int topk) {
         Collection<Integer> nearest = getNearestIds(term, topk);
 
         Map<String, float[]> results = new HashMap<>();
         for (Integer id : nearest) {
-            results.put(idToWord[id], index.getItemVector(id));
+            String token = runFilter(idToWord[id], term.getFirstToken());
+            if ( token != null) {
+                results.put(token, index.getItemVector(id));
+            }
         }
 
         return results;
@@ -163,7 +177,10 @@ public class AnnoyVectorSpace extends CachedVectorSpace {
         Collection<String> terms = new LinkedList<>();
 
         for (Integer id : nearest) {
-            terms.add(idToWord[id]);
+            String token = runFilter(idToWord[id], term.getFirstToken());
+            if ( token != null) {
+             terms.add(token);
+            }
         }
 
 
@@ -174,11 +191,8 @@ public class AnnoyVectorSpace extends CachedVectorSpace {
 
     public Collection<Integer> getNearestIds(AnalyzedTerm term, int topk) {
         if (term.getAnalyzedTokens().size() == 1) {
-            String token = null;
-            if (upercaseFilter != null) {
-                token = upercaseFilter.filterTerm(term.getFirstToken());
-            }
-            float[] vector = getVector(token);
+
+            float[] vector = getVector(term.getFirstToken());
 
             if (vector != null) {
                 return this.index.getNearest(vector, topk);

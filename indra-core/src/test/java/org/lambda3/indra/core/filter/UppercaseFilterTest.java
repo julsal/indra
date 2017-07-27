@@ -10,8 +10,9 @@ public class UppercaseFilterTest {
         UppercaseFilter filter = new UppercaseFilter();
 
         String term = "Capital";
+        String word = "word";
 
-        term = filter.filterTerm(term);
+        term = filter.filterTerm(term, word);
         System.out.print(term);
         Assert.assertFalse(term.contains("Capital"));
         Assert.assertFalse(term.contains("Passau University"));
