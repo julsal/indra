@@ -31,7 +31,7 @@ import java.util.Objects;
 public abstract class RelatednessRequest<T extends RelatednessRequest> extends AbstractBasicRequest<T> {
 
     protected ScoreFunction scoreFunction;
-    protected FilterType filter;
+    protected FilterType filter = FilterType.UPPERCASE;
     protected float filterParam;
 
     public T scoreFunction(ScoreFunction scoreFunction) {

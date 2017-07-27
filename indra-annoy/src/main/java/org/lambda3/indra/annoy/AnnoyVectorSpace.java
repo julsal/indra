@@ -45,6 +45,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import org.lambda3.indra.core.filter.Filter;
+import org.lambda3.indra.core.filter.UppercaseFilter;
 
 
 public class AnnoyVectorSpace extends CachedVectorSpace {
@@ -148,9 +149,8 @@ public class AnnoyVectorSpace extends CachedVectorSpace {
 
     public String runFilter(String term, String word){
         String token = null;
-        if (upercaseFilter != null) {
-            token = upercaseFilter.filterTerm(term, word);
-        }
+        UppercaseFilter filter = new UppercaseFilter();
+        token = filter.filterTerm(term, word);
 
         return token;
 

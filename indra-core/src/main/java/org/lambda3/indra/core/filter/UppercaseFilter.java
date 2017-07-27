@@ -22,7 +22,7 @@ public class UppercaseFilter implements Filter {
 
     @Override
     public String filterTerm(String item, String word){
-        if (Character.isLowerCase(word.charAt(0)) && Character.isUpperCase(item.charAt(0))) {
+        if ((Character.isLowerCase(word.charAt(0)) && Character.isUpperCase(item.charAt(0)))) {
             item = null;
         }
         return item;
