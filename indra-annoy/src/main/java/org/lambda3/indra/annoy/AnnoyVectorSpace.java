@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+import org.lambda3.indra.core.filter.Filter;
 
 
 public class AnnoyVectorSpace extends CachedVectorSpace {
@@ -57,6 +58,7 @@ public class AnnoyVectorSpace extends CachedVectorSpace {
     private String dataDir;
     private String[] idToWord;
     private Map<String, Integer> wordToId = new ConcurrentHashMap<>();
+    protected Filter upercaseFilter;
 
     public AnnoyVectorSpace(String dataDir) {
         this.dataDir = Objects.requireNonNull(dataDir);
@@ -164,12 +166,19 @@ public class AnnoyVectorSpace extends CachedVectorSpace {
             terms.add(idToWord[id]);
         }
 
+
+
+
         return terms;
     }
 
     public Collection<Integer> getNearestIds(AnalyzedTerm term, int topk) {
         if (term.getAnalyzedTokens().size() == 1) {
-            float[] vector = getVector(term.getFirstToken());
+            String token = null;
+            if (upercaseFilter != null) {
+                token = upercaseFilter.filterTerm(term.getFirstToken());
+            }
+            float[] vector = getVector(token);
 
             if (vector != null) {
                 return this.index.getNearest(vector, topk);

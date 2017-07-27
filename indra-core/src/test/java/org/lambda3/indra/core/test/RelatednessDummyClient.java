@@ -68,6 +68,7 @@ public class RelatednessDummyClient extends RelatednessClient {
 
     @Override
     protected Map<? extends AnalyzedPair, VectorPair> getVectors(List<? extends AnalyzedPair> analyzedPairs) {
-        return analyzedPairs.stream().collect(Collectors.toMap(p -> p, p -> new VectorPair()));
+        //return analyzedPairs.stream().collect(Collectors.toMap(p -> p, p -> new VectorPair()));
+        return null;
     }
 }

@@ -2,6 +2,7 @@ package org.lambda3.indra.core.filter;
 
 import org.apache.commons.math3.linear.RealVector;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,5 +22,11 @@ public class MinFilter implements Filter {
     @Override
     public void filtrateRelatedness(LinkedHashMap<String, Double> relatedness) {
         relatedness.entrySet().removeIf(entry -> (entry.getValue() >= min));
+    }
+
+    @Override
+    public String filterTerm(String item) {
+        throw new RuntimeException(String.format("%s does not implement filtrateitems",
+                this.getClass().getSimpleName()));
     }
 }
