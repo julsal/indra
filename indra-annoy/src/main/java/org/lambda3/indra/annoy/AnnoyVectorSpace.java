@@ -54,6 +54,7 @@ public class AnnoyVectorSpace extends CachedVectorSpace {
     public static final String TREE_FILE = "trees.ann";
     public static final String METADATA_FILE = "metadata.json";
     public static final String WORD_MAPPING_FILE = "mappings.txt";
+    public static final int MULTIPLE_TOPK = 3;
 
     private AnnoyIndex index;
     private String dataDir;
@@ -158,13 +159,16 @@ public class AnnoyVectorSpace extends CachedVectorSpace {
 
     @Override
     public Map<String, float[]> getNearestVectors(AnalyzedTerm term, int topk) {
-        Collection<Integer> nearest = getNearestIds(term, topk);
-
+        Collection<Integer> nearest = getNearestIds(term, topk * MULTIPLE_TOPK);
+        int count = 0;
         Map<String, float[]> results = new HashMap<>();
         for (Integer id : nearest) {
             String token = runFilter(idToWord[id], term.getFirstToken());
             if ( token != null) {
-                results.put(token, index.getItemVector(id));
+                if (count < topk) {
+                    results.put(token, index.getItemVector(id));
+                    count += 1;
+                }
             }
         }
 
@@ -173,13 +177,17 @@ public class AnnoyVectorSpace extends CachedVectorSpace {
 
     @Override
     public Collection<String> getNearestTerms(AnalyzedTerm term, int topk) {
-        Collection<Integer> nearest = getNearestIds(term, topk);
+        Collection<Integer> nearest = getNearestIds(term, topk * MULTIPLE_TOPK);
+        int count = 0;
         Collection<String> terms = new LinkedList<>();
 
         for (Integer id : nearest) {
             String token = runFilter(idToWord[id], term.getFirstToken());
             if ( token != null) {
-             terms.add(token);
+                if (count < topk) {
+                    terms.add(token);
+                    count+=1;
+                }
             }
         }
 
