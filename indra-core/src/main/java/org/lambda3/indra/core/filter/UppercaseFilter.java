@@ -2,6 +2,7 @@ package org.lambda3.indra.core.filter;
 
 import org.apache.commons.math3.linear.RealVector;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -11,11 +12,20 @@ public class UppercaseFilter implements Filter {
 
     @Override
     public void filtrateVectors(Map<String, RealVector> vectors) {
-        vectors.entrySet().removeIf(entry -> Character.isUpperCase(entry.getKey().charAt(0)));
+        //vectors.entrySet().removeIf(entry -> Character.isUpperCase(entry.getKey().charAt(0)));
     }
 
     @Override
     public void filtrateRelatedness(LinkedHashMap<String, Double> relatedness) {
-        relatedness.entrySet().removeIf(entry -> Character.isUpperCase(entry.getKey().charAt(0)));
+        //relatedness.entrySet().removeIf(entry -> Character.isUpperCase(entry.getKey().charAt(0)));
+    }
+
+    @Override
+    public String filterTerm(String item, String word){
+        if ((Character.isLowerCase(word.charAt(0)) && Character.isUpperCase(item.charAt(0)))) {
+            item = null;
+        }
+        return item;
+
     }
 }
